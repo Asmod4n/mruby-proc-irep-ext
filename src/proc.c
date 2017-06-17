@@ -88,7 +88,7 @@ mrb_proc_from_irep(mrb_state *mrb, mrb_value self)
 
     return proc;
 #else
-    mrb_raise(mrb, E_RUNTIME_ERROR, "mruby was compiled without MRB_USE_ETEXT_EDATA, cannot unpack procs");
+    mrb_raise(mrb, E_NOTIMP_ERROR, "mruby was compiled without MRB_USE_ETEXT_EDATA, cannot unpack procs");
 #endif
 }
 
