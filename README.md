@@ -2,6 +2,8 @@
 
 Adds extensions to the Proc class to dump mruby blocks as a irep structur and load them again
 
+To be able to unpack procs you have to compile mruby with ```c #define MRB_USE_ETEXT_EDATA``` in include/mrbconf.h of your mruby directory. It isn't supported with Visual Studio.
+
 Examples
 ========
 

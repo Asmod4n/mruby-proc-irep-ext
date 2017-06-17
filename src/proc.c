@@ -57,6 +57,7 @@ mrb_proc_to_irep(mrb_state *mrb, mrb_value self)
 static mrb_value
 mrb_proc_from_irep(mrb_state *mrb, mrb_value self)
 {
+#ifdef MRB_USE_ETEXT_EDATA
     mrb_value bin;
     mrb_get_args(mrb, "S", &bin);
     mrb_str_modify(mrb, RSTRING(bin));
@@ -86,6 +87,9 @@ mrb_proc_from_irep(mrb_state *mrb, mrb_value self)
     MRB_END_EXC(&c_jmp);
 
     return proc;
+#else
+    mrb_raise(mrb, E_RUNTIME_ERROR, "mruby was compiled without MRB_USE_ETEXT_EDATA, cannot unpack procs");
+#endif
 }
 
 void
