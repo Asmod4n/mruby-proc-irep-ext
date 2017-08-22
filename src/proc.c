@@ -76,6 +76,7 @@ mrb_proc_from_irep(mrb_state *mrb, mrb_value self)
     {
         mrb->jmp = &c_jmp;
         proc = mrb_obj_value(mrb_proc_new(mrb, irep));
+        mrb_irep_decref(mrb, irep);
         mrb->jmp = prev_jmp;
     }
     MRB_CATCH(&c_jmp)
