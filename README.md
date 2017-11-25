@@ -1,9 +1,13 @@
 [![Build Status](https://travis-ci.org/Asmod4n/mruby-proc-irep-ext.svg?branch=master)](https://travis-ci.org/Asmod4n/mruby-proc-irep-ext)
 # mruby-proc-irep-ext
 
-Adds extensions to the Proc class to dump mruby blocks as a irep structur and load them again
+Adds extensions to the Proc class to dump mruby blocks as a irep struct and load them again.
 
-To be able to unpack procs you have to compile mruby with ```c #define MRB_USE_ETEXT_EDATA``` in include/mrbconf.h of your mruby directory. It isn't supported with Visual Studio.
+Limitations
+-----------
+Only Procs/lambdas created with ruby code can be dumped.
+Normally ruby captures the local variables around a proc, this is currently not supported in this gem but is beeing investigated.
+
 
 Examples
 ========
