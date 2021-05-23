@@ -24,9 +24,9 @@ mrb_proc_to_irep(mrb_state *mrb, mrb_value self)
     uint8_t *bin = NULL;
     size_t bin_size = 0;
 #ifdef MRB_DEBUG
-    int result = mrb_dump_irep(mrb, proc->body.irep, DUMP_ENDIAN_NAT|DUMP_DEBUG_INFO, &bin, &bin_size);
+    int result = mrb_dump_irep(mrb, proc->body.irep, DUMP_DEBUG_INFO, &bin, &bin_size);
 #else
-    int result = mrb_dump_irep(mrb, proc->body.irep, DUMP_ENDIAN_NAT, &bin, &bin_size);
+    int result = mrb_dump_irep(mrb, proc->body.irep, 0, &bin, &bin_size);
 #endif
     if (unlikely(result != MRB_DUMP_OK)) {
         mrb_raise(mrb, E_RUNTIME_ERROR, "cannot dump irep");
