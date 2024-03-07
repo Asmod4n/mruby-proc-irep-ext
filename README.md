@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/Asmod4n/mruby-proc-irep-ext.svg?branch=master)](https://travis-ci.org/Asmod4n/mruby-proc-irep-ext)
 # mruby-proc-irep-ext
 
 Adds extensions to the Proc class to dump mruby blocks as a irep struct and load them again.
