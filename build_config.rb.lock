@@ -1,5 +1,5 @@
 ---
 mruby:
-  version: 3.0.0
-  release_no: 30000
-  git_commit: a3f779c5b6db75d479478a1e774c7e696b92f107
+  version: 3.3.0
+  release_no: 30300
+  git_commit: 9257a61b39d7825ba40efd693e3fa3d588f407d8

@@ -4,7 +4,7 @@ file :deps do
   if Dir.exists? "mruby"
     sh "cd mruby && MRUBY_CONFIG=#{MRUBY_CONFIG} rake clean"
   else
-    sh "git clone --depth=1 git://github.com/mruby/mruby.git"
+    sh "git clone --depth=1 https://github.com/mruby/mruby.git"
   end
 end
 

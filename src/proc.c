@@ -4,6 +4,7 @@
 #include <mruby/throw.h>
 #include <mruby/string.h>
 #include <mruby/value.h>
+#include <mruby/internal.h>
 
 #if (__GNUC__ >= 3) || (__INTEL_COMPILER >= 800) || defined(__clang__)
 #define likely(x) __builtin_expect(!!(x), 1)
