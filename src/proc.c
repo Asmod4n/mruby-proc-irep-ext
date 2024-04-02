@@ -60,9 +60,8 @@ mrb_proc_from_irep(mrb_state *mrb, mrb_value self)
 {
     mrb_value bin;
     mrb_get_args(mrb, "S", &bin);
-    mrb_str_modify(mrb, RSTRING(bin));
 
-    mrb_irep *irep = mrb_read_irep(mrb, (const uint8_t *) RSTRING_PTR(bin));
+    mrb_irep *irep = mrb_read_irep_buf(mrb, RSTRING_PTR(bin), RSTRING_LEN(bin));
 
     if (!irep) {
         mrb_raise(mrb, E_SCRIPT_ERROR, "irep load error");
@@ -75,7 +74,7 @@ mrb_proc_from_irep(mrb_state *mrb, mrb_value self)
     MRB_TRY(&c_jmp)
     {
         mrb->jmp = &c_jmp;
-        proc = mrb_obj_value(mrb_proc_new(mrb, irep));
+        proc = mrb_obj_value(mrb_closure_new(mrb, irep));
         mrb_irep_decref(mrb, irep);
         mrb->jmp = prev_jmp;
     }
