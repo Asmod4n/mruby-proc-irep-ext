@@ -50,3 +50,5 @@ build-iPhoneSimulator/
 .rvmrc
 /mruby/
 build_config.rb.lock
+compile_commands.json
+/.cache/
