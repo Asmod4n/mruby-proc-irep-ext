@@ -6,8 +6,7 @@
 MRB_BEGIN_DECL
 #include <mruby/internal.h>
 MRB_END_DECL
-#include <stdexcept>
-#include <vector>
+#include <mruby/presym.h>
 
 #if (__GNUC__ >= 3) || (__INTEL_COMPILER >= 800) || defined(__clang__)
 #define likely(x)   __builtin_expect(!!(x), 1)
@@ -113,10 +112,10 @@ MRB_BEGIN_DECL
 void
 mrb_mruby_proc_irep_ext_gem_init(mrb_state* mrb)
 {
-    mrb_define_method(mrb, mrb->proc_class, "to_irep",
+    mrb_define_method_id(mrb, mrb->proc_class, MRB_SYM(to_irep),
                       mrb_proc_to_irep, MRB_ARGS_NONE());
 
-    mrb_define_class_method(mrb, mrb->proc_class, "from_irep",
+    mrb_define_class_method_id(mrb, mrb->proc_class, MRB_SYM(from_irep),
                             mrb_proc_from_irep, MRB_ARGS_REQ(1));
 }
 
