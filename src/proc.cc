@@ -91,7 +91,7 @@ mrb_proc_from_irep(mrb_state* mrb, const void *bin, size_t len)
 
     IrepHolder holder(mrb, irep);
 
-    mrb_value proc = mrb_obj_value(mrb_closure_new(mrb, irep));
+    mrb_value proc = mrb_obj_value(mrb_proc_new(mrb, irep));
 
     return proc;
 }
