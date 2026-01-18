@@ -7,6 +7,7 @@ MRB_BEGIN_DECL
 #include <mruby/internal.h>
 MRB_END_DECL
 #include <mruby/presym.h>
+#include <mruby/proc_irep_ext.h>
 
 #if (__GNUC__ >= 3) || (__INTEL_COMPILER >= 800) || defined(__clang__)
 #define likely(x)   __builtin_expect(!!(x), 1)
@@ -29,15 +30,6 @@ struct IrepHolder {
             mrb_irep_decref(mrb, irep);
         }
     }
-
-    // non-copyable
-    IrepHolder(const IrepHolder&) = delete;
-    IrepHolder& operator=(const IrepHolder&) = delete;
-
-    // movable
-    IrepHolder(IrepHolder&& other) noexcept : mrb(other.mrb), irep(other.irep) {
-        other.irep = nullptr;
-    }
 };
 
 // ------------------------------------------------------------
@@ -53,21 +45,13 @@ struct BinHolder {
             mrb_free(mrb, ptr);
         }
     }
-
-    // non-copyable
-    BinHolder(const BinHolder&) = delete;
-    BinHolder& operator=(const BinHolder&) = delete;
-
-    // movable
-    BinHolder(BinHolder&& other) noexcept : mrb(other.mrb), ptr(other.ptr) {
-        other.ptr = nullptr;
-    }
 };
 
-static mrb_value
-mrb_proc_to_irep(mrb_state* mrb, mrb_value self)
+MRB_BEGIN_DECL
+
+MRB_API mrb_value
+mrb_proc_to_irep(mrb_state *mrb, struct RProc* proc)
 {
-    struct RProc* proc = mrb_proc_ptr(self);
     if (unlikely(MRB_PROC_CFUNC_P(proc))) {
         mrb_raise(mrb, E_TYPE_ERROR, "cannot pack C procs");
     }
@@ -91,12 +75,16 @@ mrb_proc_to_irep(mrb_state* mrb, mrb_value self)
 }
 
 static mrb_value
-mrb_proc_from_irep(mrb_state* mrb, mrb_value self)
+mrb_proc_to_irep_m(mrb_state* mrb, mrb_value self)
 {
-    mrb_value bin;
-    mrb_get_args(mrb, "S", &bin);
+    struct RProc* proc = mrb_proc_ptr(self);
+    return mrb_proc_to_irep(mrb, proc);
+}
 
-    mrb_irep* irep = mrb_read_irep_buf(mrb, RSTRING_PTR(bin), RSTRING_LEN(bin));
+MRB_API mrb_value
+mrb_proc_from_irep(mrb_state* mrb, const void *bin, size_t len)
+{
+    mrb_irep* irep = mrb_read_irep_buf(mrb, bin, len);
     if (!irep) {
         mrb_raise(mrb, E_SCRIPT_ERROR, "irep load error");
     }
@@ -108,15 +96,23 @@ mrb_proc_from_irep(mrb_state* mrb, mrb_value self)
     return proc;
 }
 
-MRB_BEGIN_DECL
+static mrb_value
+mrb_proc_from_irep_m(mrb_state* mrb, mrb_value self)
+{
+    mrb_value bin;
+    mrb_get_args(mrb, "S", &bin);
+
+    return mrb_proc_from_irep(mrb, RSTRING_PTR(bin), RSTRING_LEN(bin));
+}
+
 void
 mrb_mruby_proc_irep_ext_gem_init(mrb_state* mrb)
 {
     mrb_define_method_id(mrb, mrb->proc_class, MRB_SYM(to_irep),
-                      mrb_proc_to_irep, MRB_ARGS_NONE());
+                      mrb_proc_to_irep_m, MRB_ARGS_NONE());
 
     mrb_define_class_method_id(mrb, mrb->proc_class, MRB_SYM(from_irep),
-                            mrb_proc_from_irep, MRB_ARGS_REQ(1));
+                            mrb_proc_from_irep_m, MRB_ARGS_REQ(1));
 }
 
 void mrb_mruby_proc_irep_ext_gem_final(mrb_state*) {}
