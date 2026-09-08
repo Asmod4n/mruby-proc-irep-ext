@@ -3,9 +3,7 @@
 #include <mruby/dump.h>
 #include <mruby/string.h>
 #include <mruby/value.h>
-MRB_BEGIN_DECL
-#include <mruby/internal.h>
-MRB_END_DECL
+#include <mruby/irep.h>
 #include <mruby/presym.h>
 #include <mruby/proc_irep_ext.h>
 
